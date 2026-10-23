@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query } from "@nestjs/common";
 import { OrdersService } from "./orders.service.js";
 import { CreateOrderDto } from "./dto/create-order.dto.js";
 import { RequireActiveOrg, Session, type UserSession } from "@thallesp/nestjs-better-auth";
@@ -73,14 +73,25 @@ export class OrdersController{
         )
     }
 
+    @Post('catalog')
+    createCatalog(
+    @Body() dto: CreateOrderDto,
+    @Session() session: UserSession,
+    ) {
+    return this.ordersService.createCatalogOrder(
+        dto,
+        session.session.activeOrganizationId!,
+    );
+    }
 
-
-
-
-
-
-
-
+    @Post(':id/items')
+    addItems(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Session() session: UserSession,
+    @Body() dto: CreateOrderDto,
+    ) {
+    return this.ordersService.addItems(id, session.session.activeOrganizationId!, dto);
+    }
 
 
 

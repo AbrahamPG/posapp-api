@@ -26,6 +26,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      forbidNonWhitelisted: true,
       transform: true
     })
   )
@@ -50,6 +51,7 @@ SwaggerModule.setup('docs', app, document)
   
 
   // await app.listen(process.env.PORT ?? 3000);
-  await app.listen(3000, "0.0.0.0");
+  // await app.listen(3000, "0.0.0.0");
+  await app.listen(process.env.PORT ?? 3000, "0.0.0.0");
 }
 await bootstrap();

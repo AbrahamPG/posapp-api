@@ -1,48 +1,52 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, type Relation, Unique, UpdateDateColumn } from "typeorm";
-import { Order } from "../orders/order.entity.js";
 
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  type Relation,
+  Unique,
+  UpdateDateColumn,
+} from "typeorm";
 
-export enum TableStatus{
-    AVAILABLE = 'AVAILABLE',
-    OCCUPIED = 'OCCUPIED'
+import { RestaurantOrder } from "../restaurant-orders/restaurant-order.entity.js";
+
+export enum TableStatus {
+  AVAILABLE = "AVAILABLE",
+  OCCUPIED = "OCCUPIED",
 }
+@Entity("tables")
+@Unique(["tenantId", "name"])
+export class Table {
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
+  @Column({ length: 50 })
+  name: string;
 
+  @Column({ type: "integer" })
+  capacity: number;
 
+  @Column({
+    type: "enum",
+    enum: TableStatus,
+    default: TableStatus.AVAILABLE,
+  })
+  status: TableStatus;
 
-@Entity('tables')
-@Unique(['tenantId', 'name'])
-export class Table{
+  @Column()
+  tenantId: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @OneToMany(
+    () => RestaurantOrder,
+    (restaurantOrder) => restaurantOrder.table,
+  )
+  restaurantOrders: Relation<RestaurantOrder[]>;
 
-    @Column({
-        length: 50
-    })
-    name: string
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @Column({
-        type: 'integer'
-    })
-    capacity: number
-
-    @Column({
-        type: 'enum',
-        enum: TableStatus,
-        default: TableStatus.AVAILABLE
-    })
-    status: TableStatus
-
-    @Column()
-    tenantId: string
-
-    @OneToMany(()=> Order, orders => orders.table)
-    orders: Relation<Order[]>
-
-    @CreateDateColumn()
-    createdAt: Date
-
-    @UpdateDateColumn()
-    updatedAt: Date
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

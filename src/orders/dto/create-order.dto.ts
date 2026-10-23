@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsArray, IsInt, IsOptional, IsString, IsUUID, Length, Min, ValidateNested } from "class-validator"
+import { ArrayMinSize, IsArray, IsInt, IsOptional, IsString, IsUUID, Length, Min, ValidateNested } from "class-validator"
 
 
 
@@ -28,6 +28,7 @@ export class CreateOrderDto{
     idempotencyKey?: string
 
     @IsArray()
+    @ArrayMinSize(1)
     @ValidateNested({each: true})
     @Type(()=> CreateOrderItemDto)
     items: CreateOrderItemDto[]

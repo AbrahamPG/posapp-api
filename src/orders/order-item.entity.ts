@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, type Relation } from "typeorm";
 import { Order } from "./order.entity.js";
-import { Product } from "../products/product.entity.js";
+import { Product } from "../catalog/products/product.entity.js"; 
 
 
 

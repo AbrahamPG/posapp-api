@@ -1,21 +1,12 @@
 
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import {
-  RequireActiveOrg,
-  Session,
-  type UserSession,
-} from '@thallesp/nestjs-better-auth';
+import { BadRequestException, Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Session } from '@thallesp/nestjs-better-auth';
 
 import { BusinessProfileService } from './business-profile.service.js';
 import { CreateBusinessProfileDto } from './dto/create-business-profile.dto.js';
 import { UpdateBusinessProfileDto } from './dto/update-business-profile.dto.js';
+import { RequireActiveOrg } from '@thallesp/nestjs-better-auth'; 
+import type { UserSession } from '@thallesp/nestjs-better-auth'; 
 
 @RequireActiveOrg()
 @Controller('business-profile')
@@ -42,6 +33,13 @@ export class BusinessProfileController {
     );
   }
 
+  @Get('limits')
+getLimits(@Session() session: UserSession) {
+  return this.businessProfileService.getLimits(
+    this.getTenantId(session),
+  );
+}
+
   @Patch('me')
   update(
     @Body() dto: UpdateBusinessProfileDto,
@@ -50,6 +48,20 @@ export class BusinessProfileController {
     return this.businessProfileService.update(
       this.getTenantId(session),
       dto,
+    );
+  }
+
+  @Post('publish')
+  publish(@Session() session: UserSession) {
+    return this.businessProfileService.publish(
+      this.getTenantId(session),
+    );
+  }
+
+  @Post('unpublish')
+  unpublish(@Session() session: UserSession) {
+    return this.businessProfileService.unpublish(
+      this.getTenantId(session),
     );
   }
 

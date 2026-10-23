@@ -12,14 +12,23 @@ export class Product{
     @Column({length: 150})
     name: string
 
+    @Column({type: 'text', nullable: true})
+    description: string | null
+
     @Column({type: "integer"})
     priceCents: number
+
+    @Column({type: 'varchar', length: 500, nullable: true})
+    imageUrl: string | null
 
     @Column({default: false})
     agotado: boolean
 
     @Column({default: false})
     trackStock: boolean
+
+    @Column({default: true})
+    isVisibleInCatalog: boolean
 
     @Column()
     tenantId: string

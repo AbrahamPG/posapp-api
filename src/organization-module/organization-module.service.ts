@@ -99,7 +99,7 @@ export class OrganizationModulesService {
   }
 
   async getModulesByOrganization(
-    tenantId: string,
+  tenantId: string,
     ): Promise<OrganizationModule[]> {
     return this.organizationModuleRepository.find({
         where: { tenantId },
